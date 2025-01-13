@@ -1,6 +1,6 @@
 import express from "express"
-import "../database/connection"
-import userRoute from "../database/routes/userRoute";
+import "./database/connection"
+import userRoute from "./routes/userRoute";
 
 
 const app = express();
