@@ -1,5 +1,7 @@
 import { Sequelize } from 'sequelize-typescript';
 import envConfig from '../config/config';
+import Product from './models/productModel';
+import Category from './models/categoryModel';
 
  const sequelize = new Sequelize(envConfig.connectionString as string,{
     dialect: 'postgres', // Replace with your database dialect ('mysql', 'sqlite', etc.)
@@ -19,8 +21,13 @@ import envConfig from '../config/config';
     console.log(error)
  }
 
-sequelize.sync({force: false}).then(()=>{
+sequelize.sync({force: false,alter : false}).then(()=>{
     console.log('synced')
 })
+
+//Relationship
+
+Product.belongsTo(Category)
+Category.hasOne(Product)
 
  export default sequelize

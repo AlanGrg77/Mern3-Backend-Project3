@@ -18,6 +18,15 @@ class UserController{
             })
             return
         }
+        //Check if email already exits or not
+        const [user] = await User.findAll({
+            where : {
+                email : email
+            }
+        })
+        if(!user){
+            sendResponse(res,400,"Invalid email, please try again")
+        }
         await User.create({
             username,
             email,
