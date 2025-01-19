@@ -23,12 +23,14 @@ interface IExtenedRequest extends Request{
 class userMiddleware {
     static isUserLoggedIn = async (req:IExtenedRequest,res:Response,next:NextFunction):Promise<void>=>{
         const token = req.headers.authorization
+        console.log(token);
         if(!token){
             sendResponse(res,403,"Token not provided")
             return
         }
         jwt.verify(token,envConfig.jwtSecretKey as string,async (err,result:any)=>{
             if(err){
+                console.log(err)
                 sendResponse(res,403,"Invalid token")
             }else{
                 console.log(result)

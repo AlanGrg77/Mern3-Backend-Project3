@@ -21,13 +21,13 @@ import Category from './models/categoryModel';
     console.log(error)
  }
 
-sequelize.sync({force: false,alter : false}).then(()=>{
+sequelize.sync({force : false,alter : false}).then(()=>{
     console.log('synced')
 })
 
 //Relationship
 
-Product.belongsTo(Category)
-Category.hasOne(Product)
+Product.belongsTo(Category, {foreignKey : 'categoryId'})
+Category.hasOne(Product, {foreignKey : 'categoryId'})
 
  export default sequelize

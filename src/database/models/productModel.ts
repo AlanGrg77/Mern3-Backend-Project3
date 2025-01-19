@@ -21,7 +21,7 @@ class Product extends Model {
     type: DataType.STRING,
     allowNull: false,
   })
-  declare productname: string;
+  declare productName: string;
   @Column({
     type: DataType.TEXT,
     allowNull: false,
