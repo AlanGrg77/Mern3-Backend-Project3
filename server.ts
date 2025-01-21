@@ -1,6 +1,6 @@
 import adminSeeder from "./src/adminSeeder";
 import { app } from "./src/app";
-import envConfig from "./src/config/config";
+import envConfig from "./src/envConfig/config";
 import CategoryController from "./src/controllers/categoryController";
 
 

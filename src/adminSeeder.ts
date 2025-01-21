@@ -1,5 +1,5 @@
 import  bcrypt  from 'bcrypt';
-import envConfig from "./config/config"
+import envConfig from "./envConfig/config"
 import User from "./database/models/userModel"
 
 

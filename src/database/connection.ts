@@ -1,5 +1,5 @@
 import { Sequelize } from 'sequelize-typescript';
-import envConfig from '../config/config';
+import envConfig from '../envConfig/config';
 import Product from './models/productModel';
 import Category from './models/categoryModel';
 
@@ -21,7 +21,7 @@ import Category from './models/categoryModel';
     console.log(error)
  }
 
-sequelize.sync({force : false,alter : false}).then(()=>{
+sequelize.sync({force : false}).then(()=>{
     console.log('synced')
 })
 

@@ -1,5 +1,5 @@
 import nodemailer from "nodemailer"
-import envConfig from "../config/config"
+import envConfig from "../envConfig/config"
 
 interface IData{
     to: string,

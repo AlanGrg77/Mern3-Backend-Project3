@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import sendResponse from "../services/sendResponse";
 import jwt from "jsonwebtoken"
-import envConfig from "../config/config";
+import envConfig from "../envConfig/config";
 import User from "../database/models/userModel";
 
 export enum Role{
