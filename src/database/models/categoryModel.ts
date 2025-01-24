@@ -11,7 +11,7 @@ class Category extends Model{
         type : DataType.UUID,
         defaultValue : DataType.UUIDV4
     })
-    declare id : string
+    declare id : string 
     @Column({
         type : DataType.STRING,
         allowNull : false

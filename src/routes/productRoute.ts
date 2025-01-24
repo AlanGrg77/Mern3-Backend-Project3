@@ -8,7 +8,7 @@ import errorHandler from "../services/errorHandler";
 const productRouter: Router = express.Router();
 
 const upload = multer({ storage: storage });
-
+ 
 productRouter
   .route("/")
   .get(errorHandler(ProductController.getAllProduct))

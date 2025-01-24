@@ -3,7 +3,9 @@ import {
   Column,
   Model,
   DataType,
+  HasMany,
 } from "sequelize-typescript";
+import OrderDetails from "./orderDetails";
 
 @Table({
   tableName: "products",
@@ -46,6 +48,8 @@ class Product extends Model {
     type: DataType.STRING,
   })
   declare productImageUrl: string;
+  @HasMany(()=>OrderDetails)
+  orderDetails !: OrderDetails[]
 }
 
 export default Product;

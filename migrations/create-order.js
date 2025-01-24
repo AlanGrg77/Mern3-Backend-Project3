@@ -1,23 +1,18 @@
-const { OrderStatus } = require('../src/globals/types/index.js');  // Import the OrderStatus enum
+"use strict";
+/** @type {import('sequelize-cli').Migration} */
 
 module.exports = {
-  up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('orders', {
+  async up(queryInterface, Sequelize) {
+    await queryInterface.createTable("orders", {
       id: {
-        type: Sequelize.UUID,
-        defaultValue: Sequelize.UUIDV4,
         allowNull: false,
         primaryKey: true,
+        type: Sequelize.UUID,
+        defaultValue: Sequelize.literal("uuid_generate_v4()"),
       },
       phoneNumber: {
         type: Sequelize.STRING,
         allowNull: false,
-        validate: {
-          len: {
-            args: [10, 10],
-            msg: "Phone number must have 10 digits",
-          },
-        },
       },
       shippingAddress: {
         type: Sequelize.STRING,
@@ -28,23 +23,36 @@ module.exports = {
         allowNull: false,
       },
       orderStatus: {
-        type: Sequelize.ENUM(...Object.values(OrderStatus)), // Use the enum values from the OrderStatus enum
-        defaultValue: OrderStatus.Pending, // Use the default value from the OrderStatus enum
+        type: Sequelize.ENUM(
+          "pending",
+          "cancelled",
+          "delivered",
+          "ontheway",
+          "preparation"
+        ),
+        defaultValue: "pending",
+      },
+      userId: {
+        type: Sequelize.UUID,
+        references: {
+          model: "users",
+          key: "id",
+        },
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
       },
       createdAt: {
-        type: Sequelize.DATE,
         allowNull: false,
-        defaultValue: Sequelize.NOW,
+        type: Sequelize.DATE,
       },
       updatedAt: {
-        type: Sequelize.DATE,
         allowNull: false,
-        defaultValue: Sequelize.NOW,
+        type: Sequelize.DATE,
       },
     });
   },
 
-  down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('orders');
+  async down(queryInterface) {
+    // await queryInterface.dropTable("orders");
   },
 };

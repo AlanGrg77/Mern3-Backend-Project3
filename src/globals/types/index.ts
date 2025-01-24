@@ -8,8 +8,8 @@ export enum OrderStatus{
 }
 
 export enum PaymentMethod{
-    Khalti = "khanti",
-    Eswa = "esewa",
+    Khalti = "khalti",
+    Esewa = "esewa",
     COD = "cod"
 }
 

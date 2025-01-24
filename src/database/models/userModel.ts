@@ -1,4 +1,5 @@
-import {Table,Column,Model,DataType} from 'sequelize-typescript'
+import {Table,Column,Model,DataType, HasMany} from 'sequelize-typescript'
+import Order from './orderModel'
 
 @Table({
     tableName : 'users',
@@ -38,6 +39,8 @@ class User extends Model{
         type: DataType.STRING
     })
     declare otpGeneratedTime:string
+    @HasMany(()=>Order)
+    order!:Order[]
 }
 
 export default User

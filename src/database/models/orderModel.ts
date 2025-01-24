@@ -1,5 +1,8 @@
-import { Table, Column, Model, DataType } from "sequelize-typescript";
+import { Table, Column, Model, DataType, ForeignKey, BelongsTo, HasOne } from "sequelize-typescript";
 import { OrderStatus } from "../../globals/types";
+import User from "./userModel";
+import Payment from "./paymentModel";
+import OrderDetails from "./orderDetails";
 
 @Table({
   tableName: "orders",
@@ -39,6 +42,17 @@ class Order extends Model {
     defaultValue : OrderStatus.Pending
   })
   declare orderStatus:string
+  @ForeignKey(()=> User)
+  @Column({
+    type: DataType.UUID
+  })
+  userId!:string
+  @BelongsTo(()=>User)
+  user!:User
+  @HasOne(()=>Payment)
+  payment!:Payment
+  @HasOne(()=>OrderDetails)
+  orderDetails!: OrderDetails
 }
 
 export default Order

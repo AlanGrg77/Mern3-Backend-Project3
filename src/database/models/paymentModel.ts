@@ -1,5 +1,6 @@
-import { Table, Column, Model, DataType } from "sequelize-typescript";
+import { Table, Column, Model, DataType, BelongsTo, ForeignKey } from "sequelize-typescript";
 import { OrderStatus, PaymentMethod, PaymentStatus } from "../../globals/types";
+import Order from "./orderModel";
 
 @Table({
   tableName: "payments",
@@ -14,7 +15,7 @@ class Payment extends Model {
   })
   declare id: string;
   @Column({
-    type : DataType.ENUM(PaymentMethod.COD,PaymentMethod.Eswa,PaymentMethod.Khalti),
+    type : DataType.ENUM(PaymentMethod.COD,PaymentMethod.Esewa,PaymentMethod.Khalti),
     defaultValue : PaymentMethod.COD
   })
   declare paymentMethod : string
@@ -23,6 +24,19 @@ class Payment extends Model {
     defaultValue : PaymentStatus.Unpaid
   })
   declare paymentStatus: string
+  @Column({
+    type : DataType.STRING
+  })
+  declare pidx : string
+
+
+  @ForeignKey(()=>Order)
+  @Column({
+    type : DataType.UUID
+  })
+  orderId!:string
+  @BelongsTo(()=>Order)
+  order !: Order
 }
 
 export default Payment

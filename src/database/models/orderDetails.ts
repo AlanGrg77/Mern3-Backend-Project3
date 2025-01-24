@@ -1,4 +1,6 @@
-import { Table, Column, Model, DataType } from "sequelize-typescript";
+import { Table, Column, Model, DataType, HasMany, HasOne, BelongsTo, ForeignKey } from "sequelize-typescript";
+import Order from "./orderModel";
+import Product from "./productModel";
 
 @Table({
   tableName: "orderDetails",
@@ -17,6 +19,20 @@ class OrderDetails extends Model {
     allowNull : false
   })
   declare quantity:number
+  @ForeignKey(()=>Order)
+  @Column({
+    type: DataType.UUID
+  })
+  orderId!: string
+  @BelongsTo(()=>Order)
+  order!:Order
+  @ForeignKey(()=>Product)
+  @Column({
+    type: DataType.UUID
+  })
+  productId!: string
+  @BelongsTo(()=>Product)
+  product !: Product
 }
 
 export default OrderDetails
