@@ -6,6 +6,7 @@ import {
   HasMany,
 } from "sequelize-typescript";
 import OrderDetails from "./orderDetails";
+import Cart from "./cartModel";
 
 @Table({
   tableName: "products",
@@ -50,6 +51,8 @@ class Product extends Model {
   declare productImageUrl: string;
   @HasMany(()=>OrderDetails)
   orderDetails !: OrderDetails[]
+  @HasMany(()=>Cart)
+    cart!:Cart[]
 }
 
 export default Product;

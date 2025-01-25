@@ -1,5 +1,6 @@
-import {Table,Column,Model,DataType, HasMany} from 'sequelize-typescript'
+import {Table,Column,Model,DataType, HasMany, HasOne} from 'sequelize-typescript'
 import Order from './orderModel'
+import Cart from './cartModel'
 
 @Table({
     tableName : 'users',
@@ -41,6 +42,8 @@ class User extends Model{
     declare otpGeneratedTime:string
     @HasMany(()=>Order)
     order!:Order[]
+    @HasOne(()=>Cart)
+    cart!:Cart
 }
 
 export default User

@@ -21,7 +21,8 @@
     "nodemailer": "^6.9.16",
     "pg": "^8.13.1",
     "sequelize": "^6.37.5",
-    "sequelize-typescript": "^2.1.6"
+    "sequelize-typescript": "^2.1.6",
+    "socket.io": "^4.8.1"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
