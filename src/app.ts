@@ -5,9 +5,14 @@ import categoryRouter from "./routes/categoryRoute";
 import productRouter from "./routes/productRoute";
 import orderRouter from "./routes/orderRoute";
 import cartRouter from "./routes/cartRoute";
+import cors from "cors"
 
 const app = express();
 app.use(express.json())
+
+app.use(cors({
+    origin : "*"
+}))
 
 app.use('/api/auth',userRouter)
 app.use('/api/category',categoryRouter)

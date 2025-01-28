@@ -10,11 +10,17 @@ import checkOtpExpire from "../services/checkOtpExpire";
 
 class UserController{
     static register = async (req:Request,res:Response) =>{
-        const {username,email,password} = req.body
+        const {username,email,password,confirmPassword} = req.body
         console.log(req.body)
-        if(!username || !email || !password){
+        if(!username || !email || !password || !confirmPassword){
             res.status(400).json({
                 message: "Enter username,email and password"
+            })
+            return
+        }
+        if(password !== confirmPassword){
+            res.status(400).json({
+                message: "Password and Confirm Password doesn't match"
             })
             return
         }
@@ -22,10 +28,14 @@ class UserController{
         const [user] = await User.findAll({
             where : {
                 email : email
-            }
+            },
+            attributes : ['username','email','password']
         })
-        if(!user){
-            sendResponse(res,400,"Invalid email, please try again")
+        if(user){
+            res.status(400).json({
+                message : 'Invalid email, please try again'
+            }) 
+            return
         }
         await User.create({
             username,
@@ -33,7 +43,8 @@ class UserController{
             password : bcrypt.hashSync(password,10)
         }) 
         res.status(200).json({
-            message: "User registered successfully"
+            message: "User registered successfully",
+            data : user
         })
 
     }
@@ -42,14 +53,15 @@ class UserController{
         if(!email || !password){
             res.status(400).json(
                 {
-                    message : "Please enter eail and password"
+                    message : "Please enter emaiil and password"
                 }
             )
         }
         const [user] = await User.findAll({
             where : {
                 email : email
-            }
+            },
+            attributes : ['username','email','password']
         })
         if(!user){
             res.status(404).json({
@@ -65,7 +77,8 @@ class UserController{
                 const token = generateToken(user.id)
                 res.status(200).json({
                     message:"Logged in",
-                    token
+                    token,
+                    user
                 })
             }
         }
@@ -148,6 +161,17 @@ class UserController{
 
         sendResponse(res,200,"Password successfully changed")
 
+    }
+    static getUser = async(req:Request,res:Response) =>{
+        const users = await User.findAll({
+            attributes : ['username','email','password']
+        })
+        if(!users){
+            sendResponse(res,404,"No users found")
+        }
+        else{
+            sendResponse(res,200,"Data fetched usccessfully",users)
+        }
     }
 }
 

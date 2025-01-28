@@ -50,7 +50,6 @@ class ProductController {
   };
   static getAllProduct = async(req:Request,res:Response):Promise<void> =>{
     const datas = await Product.findAll({
-        
         include : {
             model : Category,
             attributes : ["id","categoryName"]

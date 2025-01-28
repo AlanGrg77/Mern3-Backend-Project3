@@ -7,5 +7,6 @@ userRouter.route("/login").post(UserController.login);
 userRouter.route("/forgot-password").post(UserController.handleForgotPassword);
 userRouter.route("/verify-otp").post(UserController.verifyOtp);
 userRouter.route("/reset-password").post(UserController.resetPassword);
+userRouter.route("/getUsers").get(UserController.getUser);
 
 export default userRouter
