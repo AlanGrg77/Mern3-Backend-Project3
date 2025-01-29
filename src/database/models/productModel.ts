@@ -4,9 +4,12 @@ import {
   Model,
   DataType,
   HasMany,
+  ForeignKey,
+  BelongsTo,
 } from "sequelize-typescript";
 import OrderDetails from "./orderDetails";
 import Cart from "./cartModel";
+import Category from "./categoryModel";
 
 @Table({
   tableName: "products",
@@ -53,6 +56,13 @@ class Product extends Model {
   orderDetails !: OrderDetails[]
   @HasMany(()=>Cart)
     cart!:Cart[]
+  @ForeignKey(()=>Category)
+  @Column({
+        type : DataType.UUID
+  })
+  categoryId !: string
+  @BelongsTo(()=>Category)
+  category !: Category
 }
 
 export default Product;

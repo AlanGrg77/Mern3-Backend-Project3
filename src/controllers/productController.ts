@@ -59,7 +59,7 @@ class ProductController {
   }
   static getSingleProduct = async (req:Request,res:Response):Promise<void> =>{
     const {id} = req.params
-    const data = await Product.findAll({
+    const [data] = await Product.findAll({
         where: {
             id
         },
@@ -69,7 +69,10 @@ class ProductController {
 
         }
     })
-    sendResponse(res,200,"Product fetched successfully",data)
+    res.status(200).json({
+      message : "Product fetched successfully",
+      data
+    })
   }
   static deleteProduct = async (req:Request,res:Response):Promise<void> =>{
     const {id} = req.params
