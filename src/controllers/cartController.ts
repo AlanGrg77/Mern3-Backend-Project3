@@ -37,7 +37,7 @@ class CartController{
             },
         )
         }
-        const [data] = await Cart.findAll({
+        const data = await Cart.findAll({
             where : {
                 userId
             },
@@ -106,6 +106,7 @@ class CartController{
         const userId = req.user?.id 
         const {productId} = req.params 
         const {quantity} = req.body 
+        console.log(quantity)
         if(!quantity){
             res.status(400).json({
                 message : 'Please provide quantity'
@@ -126,7 +127,8 @@ class CartController{
             cartItem.quantity = quantity; 
             await cartItem.save()
             res.status(200).json({
-                message : "Cart updated!!"
+                message : "Cart updated!!",
+                data : cartItem.quantity
             })
         }
     }
