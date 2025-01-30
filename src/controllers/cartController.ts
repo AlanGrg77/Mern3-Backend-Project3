@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import Cart from "../database/models/cartModel";
 import Product from "../database/models/productModel";
+import Category from "../database/models/categoryModel";
 interface AuthRequest extends Request{
     user? : {
         id : string 
@@ -17,26 +18,43 @@ class CartController{
             })
             return 
         }
-        // check if that item already exist on that user cart -- > if --> just qty++ | else insert 
         let userKoCartMaItemAlreadyXa = await Cart.findOne({
             where : {
                 productId, 
                 userId
             }
         })
+        let cartData;
         if(userKoCartMaItemAlreadyXa){
             
             userKoCartMaItemAlreadyXa.quantity += quantity
             await userKoCartMaItemAlreadyXa.save()
         }else{
-            await Cart.create({
+           cartData = await Cart.create({
                 userId, 
                 productId, 
                 quantity
-            })
+            },
+        )
         }
+        const [data] = await Cart.findAll({
+            where : {
+                userId
+            },
+            include : [
+                {
+                    model : Product, 
+                    include : [
+                        {
+                            model : Category
+                        }
+                    ]
+                }
+            ]
+    })
        res.status(200).json({
-        message : "Product added to Cart"
+        message : "Product added to Cart",
+        data
        })
     }
     async getMyCartItems(req:AuthRequest,res:Response){

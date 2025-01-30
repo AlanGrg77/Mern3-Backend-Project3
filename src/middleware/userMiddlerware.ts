@@ -33,8 +33,9 @@ class userMiddleware {
                 console.log(err)
                 sendResponse(res,403,"Invalid token")
             }else{
-                console.log(result)
+                console.log(result.userId)
                 const userData = await User.findByPk(result.userId)
+                console.log(userData)
                 if(!userData){
                     sendResponse(res,404,"No user with that user Id")
                     return
@@ -56,6 +57,11 @@ class userMiddleware {
             next()
         })
     }
+    // static accessTo = (...roles: Role[]) => 
+    //     (req: IExtenedRequest, res: Response, next: NextFunction) => 
+    //       roles.includes(req.user?.role as Role) 
+    //         ? next() 
+    //         : sendResponse(res, 403, "You do not have permission");
 }
 
 export default userMiddleware
