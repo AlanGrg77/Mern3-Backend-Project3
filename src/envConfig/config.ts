@@ -10,7 +10,9 @@ const envConfig = {
     password : process.env.PASSWORD,
     adminEmail : process.env.ADMIN_EMAIL,
     adminPassword : process.env.ADMIN_PASSWORD,
-    adminName : process.env.ADMIN_NAME //adminUserName in course
+    adminName : process.env.ADMIN_NAME, //adminUserName in course
+    secret : process.env.ESEWA_SECRET_KEY,
+    product_code : process.env.PRODUCT_CODE,
 }
 
 export default envConfig

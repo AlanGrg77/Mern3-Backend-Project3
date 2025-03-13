@@ -31,7 +31,22 @@ class Order extends Model {
     type : DataType.STRING,
     allowNull : false
   })
-  declare shippingAddress : string
+  declare addressLine: string
+  @Column({
+    type : DataType.STRING,
+    allowNull : false
+  })
+  declare city: string
+  @Column({
+    type : DataType.STRING,
+    allowNull : false
+  })
+  declare state: string
+  @Column({
+    type : DataType.INTEGER,
+    allowNull : false
+  })
+  declare zipCode: number
   @Column({
     type : DataType.FLOAT,
     allowNull : false
@@ -42,6 +57,22 @@ class Order extends Model {
     defaultValue : OrderStatus.Pending
   })
   declare orderStatus:string
+  @Column({
+    type : DataType.STRING, 
+    allowNull : false, 
+    
+})
+declare firstName : string 
+@Column({
+    type : DataType.STRING, 
+    allowNull : false, 
+})
+declare lastName : string 
+@Column({
+    type : DataType.STRING, 
+    allowNull : false, 
+})
+declare email : string 
   @ForeignKey(()=> User)
   @Column({
     type: DataType.UUID

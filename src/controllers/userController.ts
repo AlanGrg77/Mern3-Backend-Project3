@@ -53,7 +53,7 @@ class UserController{
         if(!email || !password){
             res.status(400).json(
                 {
-                    message : "Please enter emaiil and password"
+                    message : "Please enter email and password"
                 }
             )
         }

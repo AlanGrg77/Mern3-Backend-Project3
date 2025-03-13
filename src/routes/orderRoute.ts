@@ -16,4 +16,7 @@ orderRouter
     userMiddleware.isUserLoggedIn,
     errorHandler(orderController.verifyKTransaction)
   );
+orderRouter
+  .route("/esewa-verify")
+  .get(orderController.verifyEsewaTranscation)
 export default orderRouter;
