@@ -22,7 +22,9 @@ interface IExtenedRequest extends Request{
 
 class userMiddleware {
     static isUserLoggedIn = async (req:IExtenedRequest,res:Response,next:NextFunction):Promise<void>=>{
-        const token = req.headers.authorization
+        const authHeader = req.headers.authorization;
+        const token = authHeader && authHeader.split(" ")[1]; // Get only the token part
+
         console.log(token);
         if(!token){
             sendResponse(res,403,"Token not provided")

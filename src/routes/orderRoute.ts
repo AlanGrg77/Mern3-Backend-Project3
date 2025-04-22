@@ -1,6 +1,6 @@
 import express, { Router } from "express";
 import orderController from "../controllers/orderController";
-import userMiddleware from "../middleware/userMiddlerware";
+import userMiddleware, { Role } from "../middleware/userMiddlerware";
 import errorHandler from "../services/errorHandler";
 
 const orderRouter: Router = express.Router();
@@ -11,7 +11,6 @@ orderRouter
     userMiddleware.isUserLoggedIn,
     errorHandler(orderController.createOrder)
   );
-orderRouter.route("/:id").get(userMiddleware.isUserLoggedIn,errorHandler(orderController.fetchMyOrderDetail))
 orderRouter
   .route("/verify-pidx")
   .post(
@@ -21,4 +20,8 @@ orderRouter
 orderRouter
   .route("/esewa-verify")
   .get(orderController.verifyEsewaTranscation)
+orderRouter.route("/admin/change-status/:id").patch(userMiddleware.isUserLoggedIn, userMiddleware.accessTo(Role.Admin) ,errorHandler(orderController.changeOrderStatus))  
+orderRouter.route("/admin/delete-order/:id").post(userMiddleware.isUserLoggedIn, userMiddleware.accessTo(Role.Admin) ,errorHandler(orderController.deleteOrder))
+orderRouter.route("/cancel-order/:id").patch(userMiddleware.isUserLoggedIn, userMiddleware.accessTo(Role.Customer) ,errorHandler(orderController.cancelMyOrder))
+orderRouter.route("/:id").get(userMiddleware.isUserLoggedIn,errorHandler(orderController.fetchMyOrderDetail))
 export default orderRouter;

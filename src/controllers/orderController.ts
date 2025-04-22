@@ -20,6 +20,10 @@ interface OrderRequest extends Request{
         id : string
     }
 }
+interface OrderWithPaymentId extends Order {
+  paymentId : string | null
+}
+
 class OrderController{
     static async createOrder(req:OrderRequest,res:Response):Promise<void>{
         const userId =  req.user?.id
@@ -274,9 +278,10 @@ class OrderController{
         })
       }
     }
-    static async cancelMyOrder(req:OrderRequest,res:Response):Promise<void>{
+    static cancelMyOrder = async (req:OrderRequest,res:Response):Promise<void> => {
       const userId = req.user?.id 
-      const orderId = req.params.id 
+      const orderId = req.params.id
+      console.log(userId,orderId) 
       const [order] = await Order.findAll({
         where : {
           userId : userId, 
@@ -305,7 +310,7 @@ class OrderController{
         message : "Order cancelled successfully"
       })
     }
-    static async changeOrderStatus(req:OrderRequest,res:Response) : Promise<void>{
+    static changeOrderStatus =  async (req:OrderRequest,res:Response) : Promise<void> =>{
       const orderId = req.params.id 
       const {orderStatus} = req.body
       if(!orderId || !orderStatus){
@@ -322,35 +327,35 @@ class OrderController{
         message : "Order status updated successfully"
       })
     }
-    // static async deleteOrder(req:OrderRequest, res:Response) : Promise<void>{
+    static async deleteOrder(req:OrderRequest, res:Response) : Promise<void>{
 
-    //   const orderId = req.params.id 
-    //   const order : OrderWithPaymentId= await Order.findByPk(orderId) as OrderWithPaymentId
-    //   const paymentId = order?.paymentId
-    //   if(!order){
-    //     res.status(404).json({
-    //       message : "You dont have that orderId order"
-    //     })
-    //     return
-    //   }
-    //   await OrderDetails.destroy({
-    //     where : {
-    //       orderId : orderId
-    //     }
-    //   })
-    //   await Payment.destroy({
-    //     where : {
-    //       id : paymentId
-    //     }
-    //   })
-    //   await Order.destroy({
-    //     where : {
-    //       id : orderId
-    //     }
-    //   })
-    //   res.status(200).json({
-    //     message : "Order delete successfully"
-    //   })
-    // }
+      const orderId = req.params.id 
+      const order : OrderWithPaymentId= await Order.findByPk(orderId) as OrderWithPaymentId
+      const paymentId = order?.paymentId
+      if(!order){
+        res.status(404).json({
+          message : "You dont have that orderId order"
+        })
+        return
+      }
+      await OrderDetails.destroy({
+        where : {
+          orderId : orderId
+        }
+      })
+      await Payment.destroy({
+        where : {
+          id : paymentId
+        }
+      })
+      await Order.destroy({
+        where : {
+          id : orderId
+        }
+      })
+      res.status(200).json({
+        message : "Order delete successfully"
+      })
+    }
 }
 export default OrderController
