@@ -31,18 +31,19 @@ class CategoryController {
         })
         return
     }
-    await Category.create({
+    const data = await Category.create({
         categoryName
     })
     res.status(200).json({
-        message : "Catgory created successfully"
+        message : "Catgory created successfully",
+        data
     })
   }
   static getCategory = async(req:Request,res:Response) =>{
-    const datas = await Category.findAll()
+    const data = await Category.findAll()
     res.status(200).json({
         message : "Fetched Categories ",
-        datas
+        data
     })
 
   }
@@ -94,7 +95,9 @@ class CategoryController {
                 id
             }
         })
-        sendResponse(res,200,"Category updated successfully")
+         res.status(200).json({
+                message : "Category updated successfully"
+            })
         
     }  
   }
