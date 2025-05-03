@@ -37,7 +37,7 @@ class ProductController {
       );
       return;
     }
-    await Product.create({
+    const product = await Product.create({
       productName,
       productDescription,
       productPrice,
@@ -46,7 +46,10 @@ class ProductController {
       categoryId,
       productImageUrl : filename
     });
-    sendResponse(res,200,"Product created")
+    res.status(200).json({
+      message : "Product created successfully",
+      data : product
+    })
   };
   static getAllProduct = async(req:Request,res:Response):Promise<void> =>{
     const datas = await Product.findAll({

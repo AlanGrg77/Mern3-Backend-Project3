@@ -164,7 +164,7 @@ class UserController{
     }
     static getUser = async(req:Request,res:Response) =>{
         const users = await User.findAll({
-            attributes : ['username','email','password']
+            attributes : ['id','username','email']
         })
         if(!users){
             sendResponse(res,404,"No users found")
@@ -172,6 +172,24 @@ class UserController{
         else{
             sendResponse(res,200,"Data fetched usccessfully",users)
         }
+    }
+    static deleteUsers = async(req:Request, res:Response) =>{
+        const {id} = req.params
+        if(!id){
+            res.status(404).json({
+                message : "Id is not provided"
+            })
+            return
+        }
+        await User.destroy({
+            where : {
+                id
+            }
+        })
+        res.status(200).json({
+            message : "User deleted successfully"
+        })
+    
     }
 }
 
