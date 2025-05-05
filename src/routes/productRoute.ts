@@ -26,5 +26,6 @@ productRouter
     userMiddleware.accessTo(Role.Admin),
     errorHandler(ProductController.deleteProduct)
   );
-
+  productRouter.route("/:id/reviews")
+  .post(errorHandler(ProductController.addReview));
 export default productRouter;

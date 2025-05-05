@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import sendResponse from "../services/sendResponse";
 import Product from "../database/models/productModel";
 import Category from "../database/models/categoryModel";
+import Review from "../database/models/review.Model";
 
 // interface IProductRequest extends Request{
 //     file ?: {
@@ -66,11 +67,15 @@ class ProductController {
         where: {
             id
         },
-        include: {
+        include: [{
             model : Category,
             attributes : ["id","categoryName"]
-
-        }
+        },
+        {
+          model: Review,
+          attributes: ["id", "userId", "comment", "rating", "createdAt"],
+        }]
+        
     })
     res.status(200).json({
       message : "Product fetched successfully",
@@ -96,6 +101,52 @@ class ProductController {
     sendResponse(res,200,"Product successfully deleted",data)
 
   }
+  static addReview = async (req: Request, res: Response): Promise<void> => {
+    const { id } = req.params;
+    const { userId, comment, rating,username } = req.body;
+  
+    if (!userId || !comment || !rating) {
+      sendResponse(res, 400, "Please provide userId, comment, and rating");
+      return;
+    }
+  
+    try {
+      const product = await Product.findByPk(id);
+      if (!product) {
+        sendResponse(res, 404, "Product not found");
+        return;
+      }
+  
+      const review = await Review.create({
+        productId : id,
+        userId,
+        username,
+        comment,
+        rating,
+      });
+      const updatedProduct = await Product.findOne({
+        where: { id },
+        include: [
+          {
+            model: Category,
+            attributes: ["id", "categoryName"]
+          },
+          {
+            model: Review,
+            attributes: ["id", "userId", "comment", "rating", "createdAt"]
+          }
+        ]
+      });
+      
+      res.status(200).json({
+        message: "Review added and product updated successfully",
+        data: updatedProduct
+      });
+    } catch (error) {
+      console.error("Add Review Error:", error);
+      sendResponse(res, 500, "Something went wrong", error);
+    }
+  };
   
 }
 

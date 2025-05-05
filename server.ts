@@ -23,9 +23,15 @@ const startServer = () =>{
         onLineUsers = onLineUsers.filter((user)=>user.userId !== userId)
         onLineUsers.push({socketId,userId,role})
     }
+    const removeFromOnlineUsers = (socketId: string) => {
+        onLineUsers = onLineUsers.filter(user => user.socketId !== socketId);
+    };
+
 
     io.on("connection",(socket)=>{
-        const token = socket.handshake.headers?.token
+        console.log("connected")
+        const {token} = socket.handshake.auth
+        console.log(token)
         if(token){
             jwt.verify(token as string, envConfig.jwtSecretKey as string,async (err,result:any)=>{
                 if(err){
@@ -36,12 +42,17 @@ const startServer = () =>{
                         socket.emit("error","No user with that token")
                         return
                     }
+                console.log(socket.id,result.userId,userData.role)
                 addToOnLineUsers(socket.id,result.userId,userData.role)
+                console.log(onLineUsers)
                 }
             })
         }else{
+            console.log("triggered") 
             socket.emit("error","Please provide token")
         }
+        
+        console.log(onLineUsers)
         socket.on("updateOrderStatus",async (data)=>{
             const {status,orderId,userId} = data
             console.log(status,orderId)
@@ -57,13 +68,18 @@ const startServer = () =>{
                } 
             )
             if(findUser){
-                io.to(findUser.socketId).emit("success","Order Status updated successfully!!")
+                io.to(findUser.socketId).emit("statusUpdated",data)
             }else{
                 socket.emit("error","User is not online!!")
             }
         }
        
         )
+        socket.on("disconnect", () => {
+            console.log("Socket disconnected:", socket.id);
+            removeFromOnlineUsers(socket.id);
+            console.log("Updated Online Users:", onLineUsers);
+        });
     })
 }
 

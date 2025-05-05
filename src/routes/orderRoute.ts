@@ -6,11 +6,13 @@ import errorHandler from "../services/errorHandler";
 const orderRouter: Router = express.Router();
 orderRouter
   .route("/")
-  .get(userMiddleware.isUserLoggedIn,errorHandler(orderController.fetchAllOrders))
+  .get(userMiddleware.isUserLoggedIn,errorHandler(orderController.fetchMyOrders))
   .post(
     userMiddleware.isUserLoggedIn,
     errorHandler(orderController.createOrder)
   );
+orderRouter.route("/all").get(userMiddleware.isUserLoggedIn,userMiddleware.accessTo(Role.Admin), errorHandler(orderController.fetchAllOrders))
+
 orderRouter
   .route("/verify-pidx")
   .post(

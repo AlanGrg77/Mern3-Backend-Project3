@@ -11,4 +11,4 @@ const checkOtpExpire = (res:Response,otpGeneratedTime:string,thresholdTime:numbe
   }
 }
 
-export default checkOtpExpire
+export default checkOtpExpire 

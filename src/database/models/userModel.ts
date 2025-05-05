@@ -1,6 +1,7 @@
 import {Table,Column,Model,DataType, HasMany, HasOne} from 'sequelize-typescript'
 import Order from './orderModel'
 import Cart from './cartModel'
+import Review from './review.Model'
 
 @Table({
     tableName : 'users',
@@ -44,6 +45,8 @@ class User extends Model{
     order!:Order[]
     @HasOne(()=>Cart)
     cart!:Cart
+    @HasMany(() => Review)
+reviews!: Review[];
 }
 
 export default User

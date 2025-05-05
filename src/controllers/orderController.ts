@@ -219,6 +219,30 @@ class OrderController{
         res.status(500).json({ error: "An error occurred during payment verification", details: error });
       }
     }
+    static async fetchMyOrders(req:OrderRequest,res:Response):Promise<void>{
+      const userId = req.user?.id 
+      const orders = await Order.findAll({
+        where : {
+          userId
+        }, 
+        attributes : ["totalAmount","id","orderStatus"], 
+        include : {
+          model : Payment, 
+          attributes : ["paymentMethod", "paymentStatus"]
+        }
+      })
+      if(orders.length > 0){
+        res.status(200).json({
+          message : "Order fetched successfully", 
+          data : orders 
+        })
+      }else{
+        res.status(404).json({
+          message : "No order found", 
+          data : []
+        })
+      }
+    }
     static fetchAllOrders = async (req:OrderRequest,res:Response):Promise<void> =>{
       
       const orders = await Order.findAll({

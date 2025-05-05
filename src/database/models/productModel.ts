@@ -10,6 +10,7 @@ import {
 import OrderDetails from "./orderDetails";
 import Cart from "./cartModel";
 import Category from "./categoryModel";
+import Review from "./review.Model";
 
 @Table({
   tableName: "products",
@@ -63,6 +64,8 @@ class Product extends Model {
   categoryId !: string
   @BelongsTo(()=>Category)
   category !: Category
+  @HasMany(() => Review)
+reviews!: Review[];
 }
 
 export default Product;

@@ -61,7 +61,7 @@ class UserController{
             where : {
                 email : email
             },
-            attributes : ['id','username','email','password']
+            attributes : ['id','username','email','password','role']
         })
         if(!user){
             res.status(404).json({
